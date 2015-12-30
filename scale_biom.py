@@ -12,7 +12,7 @@ def scale_abundance(biom_element):
     for i, element in enumerate(biom_element):
         if is_number(element.strip(']')) == True and float(element.strip(']')) != 1 and float(element.strip(']')) != 0:
             biom_element[i] = str(int(float(element.strip(']'))*1000000)) + ']'  #return string of integer value after multiplication
-            print biom_element[i]
+            print "Converting ", element, " to ", biom_element[i]
         else:
             continue
     return biom_element
@@ -32,12 +32,13 @@ if __name__ == '__main__':
     
     with open(args.filename[0], "r") as f:
         biom = f.readlines()
-        biom_element = biom[0].strip().split(',')  #the whole file is one "line", so split on comma
     
+    biom_element = biom[0].strip().split(',')  #the whole file is one "line", so split on comma
     scaled_biom_element = scale_abundance(biom_element)
     scaled_biom = (',').join(scaled_biom_element)  #put it back together with commas
     
     with open("scaled_" + args.filename[0], "w") as g:
         g.write(scaled_biom)
+        g.write('\n')
         
 
