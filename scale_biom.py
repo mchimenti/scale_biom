@@ -1,4 +1,3 @@
-import sys
 import argparse
 
 def is_number(s):
@@ -32,13 +31,14 @@ if __name__ == '__main__':
     with open(args.filename[0], "r") as f:
         biom = f.readlines()
     
-    biom_element = biom[0].strip().split(',')  #the whole file is one "line", so split on comma
+    biom_element = biom[0].strip().split(',')  #the whole BIOM file is one line with no newlines
     scaled_biom_element = scale_abundance(biom_element)
-    scaled_biom = (',').join(scaled_biom_element)  #put it back together with commas
-    scaled_biom = scaled_biom.replace('],"rows":', ']],"rows":')  #correctly formatted JSON data
+    scaled_biom = (',').join(scaled_biom_element)  
+    scaled_biom = scaled_biom.replace('],"rows":', ']],"rows":')  #format back to valid JSON
+    scaled_biom = scaled_biom.replace('"type": null', '"type":"OTU table"') #format for R/Phyloseq
 
     with open("scaled_" + args.filename[0], "w") as g:
         g.write(scaled_biom)
-        g.write('\n')
+        g.write('\n')                                             #format back to valid JSON
         
 
