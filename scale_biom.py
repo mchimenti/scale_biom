@@ -28,7 +28,6 @@ if __name__ == '__main__':
     parser.add_argument('filename', type=str, nargs = 1, help='the BIOM file to process')
     
     args = parser.parse_args()
-    print args.filename[0]
     
     with open(args.filename[0], "r") as f:
         biom = f.readlines()
@@ -36,7 +35,8 @@ if __name__ == '__main__':
     biom_element = biom[0].strip().split(',')  #the whole file is one "line", so split on comma
     scaled_biom_element = scale_abundance(biom_element)
     scaled_biom = (',').join(scaled_biom_element)  #put it back together with commas
-    
+    scaled_biom = scaled_biom.replace('],"rows":', ']],"rows":')  #correctly formatted JSON data
+
     with open("scaled_" + args.filename[0], "w") as g:
         g.write(scaled_biom)
         g.write('\n')
